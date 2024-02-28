@@ -18,6 +18,7 @@ def create_config_file():
         'directory': f'{name_directory}',
     }
 
+    #Create the file config.conf
     with open('config.conf', 'w') as archivo:
         config.write(archivo)
 
