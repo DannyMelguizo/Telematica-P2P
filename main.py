@@ -6,14 +6,17 @@ import Servidor, Cliente, config_file
 def main():
     config_file.create_config_file()
 
+
+    print("Enter the IP of the Bootstrap Server:")
     bootsp = input()
     
-    while validar_ip(bootsp) == False:
-        print("Invalid IP, try again:")
+    while validate_ip(bootsp) == False:
+        print("Format IP invalid, try again:")
         bootsp = input()
 
     print("Connecting to the server...")
-    connect_to_bootsp(bootsp)
+    #connect_to_bootsp(bootsp)
+    config_file.setPear(bootsp)
 
     client = threading.Thread(target=Cliente.main)  
     server = threading.Thread(target=Servidor.main)
@@ -21,10 +24,11 @@ def main():
     client.start()
     server.start()
 
-def validar_ip(ip):
-    patron = r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+def validate_ip(ip):
+    pattern = r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
 
-    if re.match(patron, ip):
+    #Verify if the ip given is valid
+    if re.match(pattern, ip):
         return True
     else:
         return False

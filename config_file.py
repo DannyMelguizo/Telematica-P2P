@@ -55,3 +55,20 @@ def get_port_mom():
 
     return int(config['config']['port_mom'])
 
+def get_directory():
+    config.read('config.conf')
+
+    return config['config']['directory']
+
+
+def setPear(ip):
+    config.read('config.conf')
+
+    config['connections'] = {
+        'first': '',
+        'second': '',
+        'third': ''
+    }
+
+    with open('config.conf', 'w') as archivo:
+        config.write(archivo)
