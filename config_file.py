@@ -1,6 +1,6 @@
-import socket
 import os
 import configparser
+import requests
 
 config = configparser.ConfigParser()
 
@@ -28,10 +28,13 @@ def create_config_file():
         config.write(archivo)
 
 def public_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    ip = s.getsockname()[0]
-    s.close()
+    # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    # s.connect(("8.8.8.8", 80))
+    # ip = s.getsockname()[0]
+    # s.close()
+
+
+    ip = requests.get("https://api.ipify.org").text
 
     return ip
 

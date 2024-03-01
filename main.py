@@ -1,11 +1,10 @@
 import threading
-import socket
 import re
-import Servidor, Cliente, config_file
+import server, cliente, config_file, log_file
 
 def main():
     config_file.create_config_file()
-
+    log_file.create_log_file()
 
     print("Enter the IP of the Bootstrap Server:")
     bootsp = input()
@@ -18,11 +17,11 @@ def main():
     #connect_to_bootsp(bootsp)
     config_file.setPear(bootsp)
 
-    client = threading.Thread(target=Cliente.main)  
-    server = threading.Thread(target=Servidor.main)
+    _client = threading.Thread(target=cliente.main)  
+    _server = threading.Thread(target=server.main)
     
-    client.start()
-    server.start()
+    _client.start()
+    _server.start()
 
 def validate_ip(ip):
     pattern = r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
@@ -34,9 +33,8 @@ def validate_ip(ip):
         return False
     
 def connect_to_bootsp(ip):
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     port = config_file.get_port_server()
-    server.connect((ip, port))
+
     
 
 if __name__ == "__main__":
