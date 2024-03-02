@@ -7,9 +7,6 @@ const config = require('./config_file.js');
 const AddIP = (call, callback) => {
   // Get a random ip from the server
   let ip = pears.get_available_pears();
-  
-  console.log("ip aleatoria" + ip)
-  console.log("ip del cliente" + call.request.ip)
 
   // Add the new pear to the server
   pears.add_pear(ip, call.request.ip);
@@ -20,7 +17,7 @@ const AddIP = (call, callback) => {
 
 const main = async () => { 
   const packageDefinition = protoLoader.loadSync(
-    config.get_proto_path(),
+  config.get_proto_path(),
     {
       keepCase: true,
       longs: String,
@@ -32,7 +29,7 @@ const main = async () => {
 
   const getavailablepears = grpc.loadPackageDefinition(packageDefinition).getavailablepears;
   const server = new grpc.Server();
-  const ip = `0.0.0.0:${config.get_port_grpc()}`
+  const ip = `0.0.0.0:${config.get_port_grpc()}`;
 
   server.addService(getavailablepears.GetAvailablePears.service, { AddIP });
   server.bindAsync(ip, grpc.ServerCredentials.createInsecure(), (err, port) => {
@@ -41,7 +38,7 @@ const main = async () => {
       return;
     }
     server.start();
-  })
+  });
 }
 
 module.exports = { main }

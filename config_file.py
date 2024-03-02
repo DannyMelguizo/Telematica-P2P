@@ -33,30 +33,25 @@ def public_ip():
     ip = requests.get("https://api.ipify.org").text
     return ip
 
-def get_ip():
+def get_config():
     config.read('config.conf')
 
-    return config['config']['ip_public']
+    return config
+
+def get_ip():
+    return get_config()['config']['ip_public']
 
 def get_port_server():
-    config.read('config.conf')
-
-    return int(config['config']['port_server'])
+    return int(get_config()['config']['port_server'])
 
 def get_port_grpc():
-    config.read('config.conf')
-
-    return int(config['config']['port_grpc'])
+    return int(get_config()['config']['port_grpc'])
 
 def get_port_mom():
-    config.read('config.conf')
-
-    return int(config['config']['port_mom'])
+    return int(get_config()['config']['port_mom'])
 
 def get_directory():
-    config.read('config.conf')
-
-    return config['config']['directory']
+    return get_config()['config']['directory']
 
 
 def setPear(ip):

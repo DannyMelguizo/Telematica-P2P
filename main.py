@@ -15,9 +15,11 @@ def main():
         bootsp = input()
 
     print("Connecting to the server...")
-    connect_to_bootsp(bootsp)
-    config_file.setPear(bootsp)
+    #Connect to the server bootsp
+    pear_to_connect = connect_to_bootsp(bootsp)
 
+    client.connect_to_peer(pear_to_connect.ip)
+    
     _client = threading.Thread(target=client.main)  
     _server = threading.Thread(target=server.main)
     
@@ -37,11 +39,15 @@ def connect_to_bootsp(ip):
     port = config_file.get_port_grpc()
     my_ip = config_file.get_ip()
 
-
+    #Connection with gRPC to the server in gRPC port
     with grpc.insecure_channel(f'{ip}:{port}') as channel:
         stub = service_pb2_grpc.GetAvailablePearsStub(channel)
+
+        #The IP answered by the server is added to the list of peers
         response = stub.AddIP(service_pb2.IPAddressClient(ip=my_ip))
-        print(f'IP a conectar: {ip}')
+
+        return response
+        
 
 if __name__ == "__main__":
     main()
