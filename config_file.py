@@ -7,6 +7,7 @@ config = configparser.ConfigParser()
 def create_config_file():
     ip = public_ip()
     name_directory = 'shared_files'
+    proto_path = 'protobufs/service.proto'
 
     #Create the folder where the files will be saved
     try:
@@ -16,11 +17,12 @@ def create_config_file():
 
     config['config'] = {
         'ip_public': f'{ip}',
-        'port_server': '9999',
+        'port_server': '8000',
         'port_grpc': '9998',
         'port_mom': '9997',
         'port_rest': '9996',
         'directory': f'{name_directory}',
+        'proto_path': f'{proto_path}'
     }
 
     #Create the file config.conf
@@ -28,14 +30,7 @@ def create_config_file():
         config.write(archivo)
 
 def public_ip():
-    # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    # s.connect(("8.8.8.8", 80))
-    # ip = s.getsockname()[0]
-    # s.close()
-
-
     ip = requests.get("https://api.ipify.org").text
-
     return ip
 
 def get_ip():

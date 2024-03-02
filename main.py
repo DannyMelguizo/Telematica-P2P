@@ -1,6 +1,7 @@
 import threading
 import re
-import server, cliente, config_file, log_file
+import grpc
+import server, client, config_file, log_file, service_pb2, service_pb2_grpc
 
 def main():
     config_file.create_config_file()
@@ -14,10 +15,10 @@ def main():
         bootsp = input()
 
     print("Connecting to the server...")
-    #connect_to_bootsp(bootsp)
+    connect_to_bootsp(bootsp)
     config_file.setPear(bootsp)
 
-    _client = threading.Thread(target=cliente.main)  
+    _client = threading.Thread(target=client.main)  
     _server = threading.Thread(target=server.main)
     
     _client.start()
@@ -33,7 +34,12 @@ def validate_ip(ip):
         return False
     
 def connect_to_bootsp(ip):
-    port = config_file.get_port_server()
+    port = config_file.get_port_grpc()
+
+    with grpc.insecure_channel(ip + ":" + port) as channel:
+        stub = service_pb2_grpc.GetAvailablePearsStub(channel)
+        response = stub.AddIP(service_pb2.IPAddressClient(ip=ip))
+        print(f'szs {response.message}')
 
     
 

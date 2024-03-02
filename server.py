@@ -6,9 +6,9 @@ import json
 
 class Server:
     def __init__(self):
-        self.ip = config_file.get_ip()
+        self.ip = '0.0.0.0'
         self.port = config_file.get_port_server()
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.buffer = 1024
         self.tuple_connection = (self.ip, self.port)
 
