@@ -38,12 +38,13 @@ const add_pear = async (ip_father, ip_son) => {
     // Add the new pear to his father
     pears_json[ip_father] = [...pears_json[ip_father], ip_son];
     // Link the new pear with his father
-    pears_json[ip_son] = [...pears_json[ip_son], ip_father];
+    pears_json[ip_son] = [ip_father];
 
     // Update the main file
     file.pears_available[ip_father] = pears_json[ip_father];
     file.pears_available[ip_son] = pears_json[ip_son];
 
+    file.pears_connected = [...file.pears_connected, ip_son];
 
     await fs.promises.writeFile('pears.json', JSON.stringify(file), (err) => {});
 

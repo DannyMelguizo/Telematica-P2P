@@ -43,6 +43,7 @@ const get_port_grpc = () => get_config().config.port_grpc;
 const get_port_mom = () => get_config().config.port_mom;
 const get_port_rest = () => get_config().config.port_rest;
 const get_directory = () => get_config().config.directory;
+const get_proto_path = () => get_config().config.proto_path;
 
 module.exports = { 
     create_config_file, 
@@ -51,5 +52,6 @@ module.exports = {
     get_port_grpc,
     get_port_mom,
     get_port_rest,
-    get_directory
+    get_directory,
+    get_proto_path
 };

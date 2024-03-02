@@ -35,13 +35,13 @@ def validate_ip(ip):
     
 def connect_to_bootsp(ip):
     port = config_file.get_port_grpc()
+    my_ip = config_file.get_ip()
 
-    with grpc.insecure_channel(ip + ":" + port) as channel:
+
+    with grpc.insecure_channel(f'{ip}:{port}') as channel:
         stub = service_pb2_grpc.GetAvailablePearsStub(channel)
-        response = stub.AddIP(service_pb2.IPAddressClient(ip=ip))
-        print(f'szs {response.message}')
-
-    
+        response = stub.AddIP(service_pb2.IPAddressClient(ip=my_ip))
+        print(f'IP a conectar: {ip}')
 
 if __name__ == "__main__":
     main()
