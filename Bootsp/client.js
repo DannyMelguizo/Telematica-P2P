@@ -1,6 +1,6 @@
 const net = require('net');
 
-function connect_to(port, ip, data){
+const connect_to = (port, ip, data) =>{
     const client = new net.Socket();
 
     client.connect(port, ip, () => {

@@ -8,19 +8,35 @@ const net = require('net');
 
 const socket = async() => {
   const port = await config.get_port_server();
+  const ip = await config.get_ip();
   const server = net.createServer((socket) => {
     console.log('Cliente conectado.');
 
     socket.on('data', (data) => {
-        console.log('Datos recibidos del cliente:', data.toString());
+        var my_connections = pears.get_pears().pears_available[ip];
+        console.log("Data: ", data.toString());
+         
+        // for (let i = 0; i < my_connections.length; i++) {
+        //   const client = new net.Socket();
+
+        //   client.connect(port, my_connections[i], () => {
+        //       client.write(data.toString());
+      
+        //   });
+        //   client.on('data', (data) => {
+        //       console.log(`Received: ${data}`);
+        //       client.destroy();
+        //   });
+      
+        //   client.on('error', (err) => {
+        //       console.log(err);
+        //   });
+        // }
     });
 
     socket.on('end', () => {
         console.log('Cliente desconectado.');
     });
-
-    // Puedes enviar datos al cliente así
-    socket.write('Hola desde el servidor.\n');
 
     // Manejar errores
     socket.on('error', (err) => {
