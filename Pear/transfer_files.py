@@ -1,4 +1,4 @@
-import config_file, log_file
+import config_file, client
 import socket
 import threading
 
@@ -26,6 +26,8 @@ class Server():
                 if data:
                     data = data.decode()
                     print(f"receving data: {data}")
+                    client.files_founds(data)
+
                     client_socket.close()
                     break
 

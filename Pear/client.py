@@ -60,10 +60,6 @@ def connect_to_peer(ip):
     connections.append(ip)
 
 def files_founds(data):
-    try:
-        data = json.loads(data)
-    except:
-        print(type(data))
     list_files.append(data)
     show_files_found()
 
