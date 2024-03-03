@@ -1,7 +1,7 @@
 import threading
 import re
 import grpc
-import server, client, tranfer_files,config_file, log_file, service_pb2, service_pb2_grpc
+import server, client, Pear.transfer_files as transfer_files,config_file, log_file, service_pb2, service_pb2_grpc
 
 def main():
     config_file.create_config_file()
@@ -17,7 +17,7 @@ def main():
     
     _client = threading.Thread(target=client.main)  
     _server = threading.Thread(target=server.main)
-    _transfer_files = threading.Thread(target=tranfer_files.main)
+    _transfer_files = threading.Thread(target=transfer_files.main)
     
     _client.start()
     _server.start()

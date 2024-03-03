@@ -1,7 +1,7 @@
 import threading
 import socket
 import os
-import config_file, log_file, client
+import config_file, log_file, client, transfer_files
 import json
 
 class Server:
@@ -70,12 +70,13 @@ class Server:
     
     def send_file(self, file, origin):
         my_ip = config_file.get_ip()
+        port_mom = config_file.get_port_mom()
         data = {
             my_ip: file
         }
         
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((origin, self.port_mom))
+        client_socket.connect((origin, port_mom))
         client_socket.send(json.dumps(data).encode())
         client_socket.shutdown(socket.SHUT_WR)
         client_socket.close()
