@@ -37,7 +37,9 @@ const server = net.createServer((socket) => {
 
 });
 
-server.listen(config.get_port_server(), () => {});
+const port = async() => {return await config.get_port_server();}
+
+server.listen(port, () => {});
 server.on('error', (err) => {throw err;});
 
 const main = async () => { 
