@@ -31,3 +31,7 @@ class Server():
 
         except ConnectionResetError:
             print(f"Connection from {address} was closed")
+
+
+def main():
+    Server()
