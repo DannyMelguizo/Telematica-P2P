@@ -73,6 +73,7 @@ def send_request(data):
     for i in connections:
         if i == data['last_peer']:
             continue
+        print(f"Sending request to {i}")
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((i, port))
         client_socket.send(json.dumps(data).encode())

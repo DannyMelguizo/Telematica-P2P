@@ -21,6 +21,7 @@ class Server:
             thread_client.start()
 
     def handle_client(self, client_socket, address):
+        print("Connection from", address)
         if address[0] not in client.connections and len(client.connections) < 3:
             client.connections.append(address[0])
         try:
