@@ -25,7 +25,6 @@ class Server():
 
                 if data:
                     data = data.decode()
-                    print(f"receving data: {data}")
                     client.files_founds(data)
 
                     client_socket.close()

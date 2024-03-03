@@ -42,6 +42,7 @@ def Interface():
 def show_files_found():
     print("\nFiles found:")
     for idx, file in enumerate(list_files):
+        file = json.loads(file)
         print(f"{idx+1}. {list(file.keys())[0]} {list(file.values())[0]}")
     
 
@@ -69,7 +70,6 @@ def send_request(data):
     for i in connections:
         if i == data['last_peer']:
             continue
-        print(f"Sending request to {i}")
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((i, port))
         client_socket.send(json.dumps(data).encode())
