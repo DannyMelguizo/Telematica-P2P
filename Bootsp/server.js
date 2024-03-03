@@ -5,6 +5,40 @@ const config = require('./config_file.js');
 const client = require('./client.js');
 const net = require('net');
 
+
+const socket = async() => {
+  const port = await config.get_port_server();
+  const server = net.createServer((socket) => {
+    console.log('Cliente conectado.');
+
+    socket.on('data', (data) => {
+        console.log('Datos recibidos del cliente:', data.toString());
+    });
+
+    socket.on('end', () => {
+        console.log('Cliente desconectado.');
+    });
+
+    // Puedes enviar datos al cliente así
+    socket.write('Hola desde el servidor.\n');
+
+    // Manejar errores
+    socket.on('error', (err) => {
+        console.error(`Error: ${err}`);
+    });
+  });
+
+  server.listen(port, () => {
+      console.log(`Servidor escuchando en el puerto ${port}`);
+  });
+
+  server.on('error', (err) => {
+      throw err;
+  });
+
+}
+
+
 const AddIP = (call, callback) => {
   // Get a random ip from the server
   let ip = pears.get_available_pears();
@@ -15,32 +49,6 @@ const AddIP = (call, callback) => {
   // Return the ip to the client
   callback(null, { ip: ip });
 }
-
-const server = net.createServer((socket) => {
-  console.log('Cliente conectado.');
-  // socket.on('data', (data) => {
-  //   port = config.get_port_mom();
-  //   connexions = pears.get_pears().pears_available[config.get_ip()];
-  //   data = JSON.parse(data.toString());
-
-  //   data.last_peer = config.get_ip();
-
-  //   connexions.forEach((ip) => {
-  //     if (ip != data.last_peer) {
-  //       client.connect_to(port, ip, data);
-  //     }
-  //   });
-
-  // })
-
-  socket.end();
-
-});
-
-const port = async() => {return await config.get_port_server();}
-
-server.listen(port, () => {});
-server.on('error', (err) => {throw err;});
 
 const main = async () => { 
   const packageDefinition = protoLoader.loadSync(
@@ -54,9 +62,12 @@ const main = async () => {
     }
   );
 
+  const port_grpc = await config.get_port_grpc();
   const getavailablepears = grpc.loadPackageDefinition(packageDefinition).getavailablepears;
   const server = new grpc.Server();
-  const ip = `0.0.0.0:${config.get_port_grpc()}`;
+  const ip = `0.0.0.0:${port_grpc}`;
+
+  socket();
 
   server.addService(getavailablepears.GetAvailablePears.service, { AddIP });
   server.bindAsync(ip, grpc.ServerCredentials.createInsecure(), (err, port) => {
@@ -65,6 +76,8 @@ const main = async () => {
       return;
     }
   });
+
+
 }
 
 module.exports = { main }
