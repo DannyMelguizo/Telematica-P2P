@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package getavailablepears;
+
+message IPAddressClient {
+    string ip = 1;
+}
+
+message IPResponse {
+    string ip = 1;
+}
+
+service GetAvailablePears {
+    rpc AddIP(IPAddressClient) returns (IPResponse) {}
+}
