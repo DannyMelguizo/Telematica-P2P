@@ -7,10 +7,10 @@ def main():
     config_file.create_config_file()
     log_file.create_log_file()
 
-    # print("Enter the IP of the Bootstrap Server:")
+    print("Enter the IP of the Bootstrap Server:")
     bootsp = input()
 
-    # #Verify if the ip given is valid and try to connect to the server
+    #Verify if the ip given is valid and try to connect to the server
     pear_to_connect = try_connection(bootsp)
 
     client.connect_to_peer(pear_to_connect.ip)

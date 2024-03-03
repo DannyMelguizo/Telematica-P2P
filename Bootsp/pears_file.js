@@ -56,5 +56,6 @@ const add_pear = async (ip_father, ip_son) => {
 module.exports = { 
     create_pears_file,
     get_available_pears,
-    add_pear
+    add_pear,
+    get_pears
 };

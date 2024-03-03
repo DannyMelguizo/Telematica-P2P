@@ -11,10 +11,8 @@ class Server:
         #Create the socket
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.buffer = 1024
-        self.tuple_connection = (self.ip, self.port)
 
-        print(f"Server running on {self.ip}:{self.port}")
-        self.server_socket.bind(self.tuple_connection)  
+        self.server_socket.bind((self.ip, self.port))  
         self.server_socket.listen()
 
         while True:
@@ -27,31 +25,37 @@ class Server:
             client.connections.append(address[0])
         try:
             while True:
-                data = client_socket.recv(self.buffer).decode()
+                data = client_socket.recv(self.buffer)
 
-                while data == "":
-                    data = client_socket.recv(self.buffer).decode()
+                if data:
 
-                data = json.loads(data)
-                file_name = data['file_name']
+                    print(data)
 
-                log = f"{data['origin']} requested {file_name} from {address[0]}"
-                log_file.write_log_file(log)
+                    data = json.loads(data)
+                    file_name = data['file_name']
+                    last_peer = address[0]
+                    data['last_peer'] = last_peer
+                    origin = data['origin']
 
-                #Send the file
-                if self.search_file(file_name):
-                    print(f"File {file_name} found")
-                    print(f"Sending file to {data['origin']}")
-                    break
-                    
-                #Transfer the request to another peer
-                else:
-                    data['last_peer'] = config_file.get_ip()
-                    print(f"File {file_name} not found")
-                    print(f"Transfering request to another peer")
-                    client.send_request(data)
-                    break
+                    log = f"{origin} requested {file_name} from {last_peer}"
+                    log_file.write_log_file(log)
 
+                    #Send the file
+                    if self.search_file(file_name):
+                        print(f"File {file_name} found")
+                        self.send_file(file_name, origin)
+            
+                        client_socket.close()
+                        break
+                        
+                    #Transfer the request to another peer
+                    else:
+                        print(f"File {file_name} not found")
+                        print(f"Transfering request to another peer")
+                        client.send_request(data)
+
+                        client_socket.close()
+                        break
 
         except ConnectionResetError:
             print(f"Connection from {address} was closed")
@@ -62,8 +66,18 @@ class Server:
             return True
         
         return False
-
+    
+    def send_file(self, file, origin):
+        my_ip = config_file.get_ip()
+        data = {
+            my_ip: file
+        }
         
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((origin, self.port_mom))
+        client_socket.send(json.dumps(data).encode())
+        client_socket.shutdown(socket.SHUT_WR)
+        client_socket.close()
 
 def main():
     Server()

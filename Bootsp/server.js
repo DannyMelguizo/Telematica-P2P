@@ -2,6 +2,7 @@ const grpc = require("@grpc/grpc-js")
 const protoLoader = require("@grpc/proto-loader")
 const pears = require('./pears_file.js');
 const config = require('./config_file.js');
+const client = require('./client.js');
 const net = require('net');
 
 const AddIP = (call, callback) => {
@@ -15,19 +16,30 @@ const AddIP = (call, callback) => {
   callback(null, { ip: ip });
 }
 
-const server = net.createServer((socket) => {
-  console.log('Cliente conectado.');
+// const server = net.createServer((socket) => {
+//   console.log('Cliente conectado.');
 
-  socket.on('data', (data) => {
-    console.log(data.toString());
-  })
+//   socket.on('data', (data) => {
+//     port = config.get_port_mom();
+//     connexions = pears.get_pears().pears_available[config.get_ip()];
+//     data = JSON.parse(data.toString());
 
-  socket.end('Conexión finalizada.');
+//     data.last_peer = config.get_ip();
 
-});
+//     connexions.forEach((ip) => {
+//       if (ip != data.last_peer) {
+//         client.connect_to(port, ip, data);
+//       }
+//     });
 
-server.listen(config.get_port_server(), () => {});
-server.on('error', (err) => {throw err;});
+//   })
+
+//   socket.end();
+
+// });
+
+// server.listen(config.get_port_server(), () => {});
+// server.on('error', (err) => {throw err;});
 
 const main = async () => { 
   const packageDefinition = protoLoader.loadSync(

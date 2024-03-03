@@ -3,9 +3,11 @@ import config_file, log_file
 import json
 
 connections = []
+list_files = []
 
-def Interfaz():
-    print("Select a number to navigate through the menu.")
+def Interface():
+    global list_files
+    print("\nSelect a number to navigate through the menu.")
     print("1. Search for a file")
     print("2. List all connections")
     print("0. Exit")
@@ -23,6 +25,7 @@ def Interfaz():
 
         #Send the request to the known peers
         send_request(data)
+        list_files = []
         print("waiting for response...")
 
 
@@ -31,14 +34,22 @@ def Interfaz():
         for i in connections:
             print(i)
 
-        print("\n")
-        Interfaz()
+        Interface()
 
     elif option == 0:
         pass
 
+def show_files_found():
+    print("\nFiles found:")
+    for idx, file in enumerate(list_files):
+        print(f"{idx+1}. {list(file.keys())[0]} {list(file.values())[0]}")
+    
+
+    Interface()
+
 def connect_to_peer(ip):
     #Create the socket
+    print(f"Connecting to {ip}")
     port = config_file.get_port_server()
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((ip, port))
@@ -48,8 +59,15 @@ def connect_to_peer(ip):
     log_file.write_log_file(log, 1)
     connections.append(ip)
 
+def files_founds(data):
+    try:
+        data = json.loads(data)
+    except:
+        print(type(data))
+    list_files.append(data)
+    show_files_found()
+
 def send_request(data):
-    print(connections)
     port = config_file.get_port_server()
     #Send the request to the known peers
     for i in connections:
@@ -63,4 +81,4 @@ def send_request(data):
 
 
 def main():
-    Interfaz()
+    Interface()
