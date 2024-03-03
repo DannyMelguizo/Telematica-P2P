@@ -7,16 +7,11 @@ def main():
     config_file.create_config_file()
     log_file.create_log_file()
 
-    print("Enter the IP of the Bootstrap Server:")
+    # print("Enter the IP of the Bootstrap Server:")
     bootsp = input()
-    
-    while validate_ip(bootsp) == False:
-        print("Format IP invalid, try again:")
-        bootsp = input()
 
-    print("Connecting to the server...")
-    #Connect to the server bootsp
-    pear_to_connect = connect_to_bootsp(bootsp)
+    # #Verify if the ip given is valid and try to connect to the server
+    pear_to_connect = try_connection(bootsp)
 
     client.connect_to_peer(pear_to_connect.ip)
     
@@ -29,11 +24,35 @@ def main():
 def validate_ip(ip):
     pattern = r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
 
+    if ip == "0.0.0.0":
+        return False
+
     #Verify if the ip given is valid
     if re.match(pattern, ip):
         return True
     else:
         return False
+    
+def try_connection(ip):
+
+    pear_to_connect = None
+
+    while validate_ip(ip) == False:
+        print("Format IP invalid, try again:")
+        ip = input()
+
+    try:
+        print("Connecting to the server...")
+        #Connect to the server bootsp
+        pear_to_connect = connect_to_bootsp(ip)
+
+    except:
+        print("Error connecting to the server\nTry another IP:")
+        ip = input()
+        pear_to_connect = try_connection(ip)
+    
+    return pear_to_connect
+
     
 def connect_to_bootsp(ip):
     port = config_file.get_port_grpc()

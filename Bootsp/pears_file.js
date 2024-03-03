@@ -27,6 +27,9 @@ const get_available_pears = () => {
     let ips = Object.keys(available_pears);
 
     let random_ip = ips[Math.floor(Math.random() * ips.length)];
+    while(Object.keys(available_pears[random_ip]).length >= 2) {
+        random_ip = ips[Math.floor(Math.random() * ips.length)];
+    }
 
     return random_ip;
 }

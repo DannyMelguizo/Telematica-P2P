@@ -1,7 +1,7 @@
 import threading
 import socket
 import os
-import config_file, log_file
+import config_file, log_file, client
 import json
 
 class Server:
@@ -13,10 +13,9 @@ class Server:
         self.buffer = 1024
         self.tuple_connection = (self.ip, self.port)
 
-        self.server_socket.bind(self.tuple_connection)
-        self.server_socket.listen()
-
         print(f"Server running on {self.ip}:{self.port}")
+        self.server_socket.bind(self.tuple_connection)  
+        self.server_socket.listen()
 
         while True:
             client_socket, address = self.server_socket.accept()
@@ -24,8 +23,8 @@ class Server:
             thread_client.start()
 
     def handle_client(self, client_socket, address):
-        print(f"New connection from {address[0]}")
-
+        if address[0] not in client.connections and len(client.connections) < 3:
+            client.connections.append(address[0])
         try:
             while True:
                 data = client_socket.recv(self.buffer).decode()
@@ -42,10 +41,17 @@ class Server:
                 #Send the file
                 if self.search_file(file_name):
                     print(f"File {file_name} found")
+                    print(f"Sending file to {data['origin']}")
+                    break
                     
                 #Transfer the request to another peer
                 else:
+                    data['last_peer'] = config_file.get_ip()
                     print(f"File {file_name} not found")
+                    print(f"Transfering request to another peer")
+                    client.send_request(data)
+                    break
+
 
         except ConnectionResetError:
             print(f"Connection from {address} was closed")
