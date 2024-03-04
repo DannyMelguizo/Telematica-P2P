@@ -5,13 +5,18 @@ import grpc
 import config_file, log_file, client, service_pb2, service_pb2_grpc
 import json
 
+from concurrent import futures
+
 class Server:
-    def __init__(self):
+    def __init__(self, is_bootsp):
         self.ip = '0.0.0.0'
         self.port = config_file.get_port_server()
         #Create the socket
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.buffer = 1024
+
+        if is_bootsp:
+            self.server_grpc()
 
         print("Server listening on", self.ip, ":", self.port)
         self.server_socket.bind((self.ip, self.port))  
@@ -24,6 +29,7 @@ class Server:
 
     def server_grpc(self):
         port_grpc = config_file.get_port_grpc()
+        print(f"Server gRPC listening on port {port_grpc}")
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         service_pb2_grpc.add_GetAvailablePearsServicer_to_server(GetAvailablePears(), server)
         server.add_insecure_port(f'[::]:{port_grpc}')
@@ -97,10 +103,8 @@ class GetAvailablePears(service_pb2_grpc.GetAvailablePearsServicer):
     def AddIP(self, request, context):
         ip = request.ip
         print(f"Adding {ip} to the list of available pears")
-        randomip = "localhost"
+        randomip = self.ip
         return service_pb2.IPResponse(ip=randomip)
 
 def main(is_bootsp = False):
-    Server()
-    if is_bootsp:
-        Server.server_grpc()
+    Server(is_bootsp)
