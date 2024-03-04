@@ -21,6 +21,8 @@
 ### **Reto 1 y 2: Red P2P descentralizada**
 El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a traves de una interfaz (en este caso desarrollada por consola) los pears podran interactuar con la red, esta interracion sera principalmente para solicitar archivos, la solicitud debera llegar y recorrer los distintos pears conectados en la red en busca del archivo, una vez se encuentre el archivo, se le enviara una lista al pear solicitante de los distintos pears que tienen el archivo en la cual este podra decidir de cual de los pears en la lista descargar el archivo. Cada pear debe tener un archivo config en el cual se establezcan los diferentes datos que se consideren necesarios, minimamente tener, la ip del pear, puerto en el cual estara haciendo listening, directorio en el cual se buscaran los archivos y las ips conocidas por el pear.
 
+*******
+
 <div id="requisitos" />
 
 ### ***Requisitos completados***
@@ -29,9 +31,13 @@ El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a 
 ### ***Requisitos no completados***
 1.2. Que aspectos NO cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
 
+*******
+
 <div id="arquitectura" />
 
 ### ***2. información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.***
+
+*******
 
 <div id="ambiente" />
   
@@ -43,6 +49,8 @@ El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a 
 * descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
 * opcional - detalles de la organización del código por carpetas o descripción de algún archivo. (ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS IMPORTANTE DEL PROYECTO, comando 'tree' de linux)
 * opcionalmente - si quiere mostrar resultados o pantallazos 
+
+*******
 
 <div id="ejecucion" />
   
@@ -59,6 +67,8 @@ una mini guia de como un usuario utilizaría el software o la aplicación
 opcionalmente - si quiere mostrar resultados o pantallazos 
 
 # 5. otra información que considere relevante para esta actividad.
+
+*******
 
 <div id="referencias"/>
 # referencias:
