@@ -1,7 +1,8 @@
 import threading
 import socket
 import os
-import config_file, log_file, client, transfer_files
+import grpc
+import config_file, log_file, client, service_pb2, service_pb2_grpc
 import json
 
 class Server:
@@ -12,6 +13,7 @@ class Server:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.buffer = 1024
 
+        print("Server listening on", self.ip, ":", self.port)
         self.server_socket.bind((self.ip, self.port))  
         self.server_socket.listen()
 
@@ -19,6 +21,15 @@ class Server:
             client_socket, address = self.server_socket.accept()
             thread_client = threading.Thread(target=self.handle_client, args=(client_socket, address))
             thread_client.start()
+
+    def server_grpc(self):
+        port_grpc = config_file.get_port_grpc()
+        server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+        service_pb2_grpc.add_GetAvailablePearsServicer_to_server(GetAvailablePears(), server)
+        server.add_insecure_port(f'[::]:{port_grpc}')
+        server.start()
+        server.wait_for_termination()
+
 
     def handle_client(self, client_socket, address):
         print("Connection from", address)
@@ -81,5 +92,15 @@ class Server:
         client_socket.shutdown(socket.SHUT_WR)
         client_socket.close()
 
-def main():
+class GetAvailablePears(server_pb2_grpc.GetAvailablePearsServicer):
+
+    def AddIP(self, request, context):
+        ip = request.ip
+        print(f"Adding {ip} to the list of available pears")
+        randomip = "localhost"
+        return service_pb2.IPResponse(ip=randomip)
+
+def main(is_bootsp = False):
     Server()
+    if is_bootsp:
+        Server.server_grpc()

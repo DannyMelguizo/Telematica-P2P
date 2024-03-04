@@ -18,9 +18,8 @@ def create_config_file():
     config['config'] = {
         'ip_public': f'{ip}',
         'port_server': '8000',
-        'port_grpc': '9998',
-        'port_mom': '9997',
-        'port_rest': '9996',
+        'port_grpc': '8001',
+        'port_mom': '8002',
         'directory': f'{name_directory}',
         'proto_path': f'{proto_path}'
     }
