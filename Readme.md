@@ -71,7 +71,8 @@ opcionalmente - si quiere mostrar resultados o pantallazos
 *******
 
 <div id="referencias"/>
-# referencias:
-## sitio1-url 
-## sitio2-url
-## url de donde tomo info para desarrollar este proyecto
+  
+### ***referencias:***
+  sitio1-url 
+  sitio2-url
+  url de donde tomo info para desarrollar este proyecto
