@@ -10,14 +10,15 @@ def main():
     print("Enter the IP of the Bootstrap Server:")
     bootsp = input()
 
-    #Verify if the ip given is valid and try to connect to the server
-    pear_to_connect = try_connection(bootsp)
-
     if bootsp != "Bootsp":
+        #Verify if the ip given is valid and try to connect to the server
+        pear_to_connect = try_connection(bootsp)
         client.connect_to_peer(pear_to_connect.ip)
         _server = threading.Thread(target=server.main)
+
     else:
-        _server = threading.Thread(target=server.main, args=True)
+        is_bootsp = True
+        _server = threading.Thread(target=server.main, args=(is_bootsp,))
         
     _client = threading.Thread(target=client.main)
     _transfer_files = threading.Thread(target=transfer_files.main)
@@ -31,8 +32,6 @@ def validate_ip(ip):
 
     if ip == "0.0.0.0":
         return False
-    elif ip == "Bootsp":
-        return True
 
     #Verify if the ip given is valid
     if re.match(pattern, ip):

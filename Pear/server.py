@@ -92,7 +92,7 @@ class Server:
         client_socket.shutdown(socket.SHUT_WR)
         client_socket.close()
 
-class GetAvailablePears(server_pb2_grpc.GetAvailablePearsServicer):
+class GetAvailablePears(service_pb2_grpc.GetAvailablePearsServicer):
 
     def AddIP(self, request, context):
         ip = request.ip
