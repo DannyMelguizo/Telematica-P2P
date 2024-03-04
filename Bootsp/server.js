@@ -15,23 +15,6 @@ const socket = async() => {
     socket.on('data', (data) => {
         var my_connections = pears.get_pears().pears_available[ip];
         console.log("Data: ", data.toString());
-         
-        // for (let i = 0; i < my_connections.length; i++) {
-        //   const client = new net.Socket();
-
-        //   client.connect(port, my_connections[i], () => {
-        //       client.write(data.toString());
-      
-        //   });
-        //   client.on('data', (data) => {
-        //       console.log(`Received: ${data}`);
-        //       client.destroy();
-        //   });
-      
-        //   client.on('error', (err) => {
-        //       console.log(err);
-        //   });
-        // }
     });
 
     socket.on('end', () => {
