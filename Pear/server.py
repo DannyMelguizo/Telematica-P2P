@@ -16,7 +16,8 @@ class Server:
         self.buffer = 1024
 
         if is_bootsp:
-            self.server_grpc()
+            grpc_thread = threading.Thread(target=self.server_grpc)
+            grpc_thread.start()
 
         print("Server listening on", self.ip, ":", self.port)
         self.server_socket.bind((self.ip, self.port))  
