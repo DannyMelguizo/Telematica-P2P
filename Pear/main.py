@@ -27,6 +27,10 @@ def main():
     _server.start()
     _transfer_files.start()
 
+    while True:
+        if _client.is_alive() == False:
+            exit()
+
 def validate_ip(ip):
     pattern = r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
 

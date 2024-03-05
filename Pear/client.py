@@ -11,11 +11,11 @@ def Interface():
     print("\nSelect a number to navigate through the menu.")
     print("1. Search for a file")
     print("2. List all connections\n")
-    print("0. Exit")
+    print("0. Exit\n")
     option = input()
 
     if int(option) == 1:
-        print("\nEnter the name of the file you are looking for:")
+        print("Enter the name of the file you are looking for:")
         file = input()
 
         data = {
@@ -44,8 +44,7 @@ def Interface():
 
     elif int(option) == 0:
         disconnect()
-        exit()
-        
+
     else:
         print("Invalid option\n")
         Interface()
@@ -102,6 +101,7 @@ def disconnect():
     
     log = f"Disconnecting"
     log_file.write_log_file(log, 1)
+    
 
 def main():
     Interface()

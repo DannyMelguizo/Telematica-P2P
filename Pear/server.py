@@ -40,7 +40,7 @@ class Server:
 
 
     def handle_client(self, client_socket, address):
-        print("\nConnection from", address)
+        print("Connection from", address)
         if address[0] not in client.connections and len(client.connections) < 3:
             client.connections.append(address[0])
         while True:
@@ -60,7 +60,7 @@ class Server:
                             client.connections[0] = father
                     else:
                         client.connections.remove(address[0])
-                        if random_peer != None:
+                        if random_peer != "None":
                             client.connections.append(random_peer)
 
                     break
