@@ -60,7 +60,8 @@ class Server:
                             client.connections[0] = father
                     else:
                         client.connections.remove(address[0])
-                        client.connections.append(random_peer)
+                        if random_peer != None:
+                            client.connections.append(random_peer)
 
                     break
 

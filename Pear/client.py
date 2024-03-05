@@ -25,15 +25,14 @@ def Interface():
         }
 
         list_files = []
-        print("Looking for the file...\n\nIf the file is found, we will show you a list below.\n\n")
+        print("Looking for the file...\n\nIf the file is found, we will show you a list below.\n")
         print("Press any key to go back to the menu.")
 
         #Send the request to the known peers
         send_request(data)
         
         option = input()
-        if option:
-            Interface()
+        Interface()
 
 
     elif int(option) == 2:
@@ -59,8 +58,7 @@ def show_files_found():
     
     print("\nPress any key to go back to the menu.")
     option = input()
-    if option:
-        Interface()
+    Interface()
 
 def connect_to_peer(ip):
     #Create the socket
@@ -91,7 +89,10 @@ def disconnect():
     print("\nDisconnecting...")
 
     father = connections[0]
-    random_peer = connections[random.randint(1, len(connections)-1)]
+    try:
+        random_peer = connections[random.randint(1, len(connections)-1)]
+    except:
+        random_peer = None
 
     for i in connections:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

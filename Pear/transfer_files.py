@@ -19,21 +19,15 @@ class Server():
             thread_client_file.start()
 
     def handle_client(self, client_socket, address):
-        print(f"New conexion sending file from {address}")
-        try:
-            while True:
-                data = client_socket.recv(self.buffer)
+        while True:
+            data = client_socket.recv(self.buffer)
 
-                if data:
-                    data = data.decode()
-                    client.files_founds(data)
+            if data:
+                data = data.decode()
+                client.files_founds(data)
 
-                    client_socket.close()
-                    break
-
-        except ConnectionResetError:
-            print(f"Connection from {address} was closed")
-
+                client_socket.close()
+                break
 
 def main():
     Server()
