@@ -4,6 +4,7 @@ import json
 
 connections = []
 list_files = []
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def Interface():
     global list_files
@@ -37,7 +38,8 @@ def Interface():
         Interface()
 
     elif option == 0:
-        pass
+        disconnect()
+        
     else:
         print("Invalid option\n")
         Interface()
@@ -53,9 +55,7 @@ def show_files_found():
 
 def connect_to_peer(ip):
     #Create the socket
-    port = config_file.get_port_server()
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((ip, port))
+    connect_to_server(ip)
     client_socket.close()
 
     log = f"Connected to {ip}"
@@ -66,18 +66,28 @@ def files_founds(data):
     list_files.append(data)
     show_files_found()
 
+
+def connect_to_server(ip):
+    client_socket.connect((ip, config_file.get_port_server()))
+
+
 def send_request(data):
-    port = config_file.get_port_server()
     #Send the request to the known peers
     for i in connections:
         if i == data['last_peer']:
             continue
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((i, port))
+        client_socket.connect((i, config_file.get_port_server()))
         client_socket.send(json.dumps(data).encode())
         client_socket.shutdown(socket.SHUT_WR)
         client_socket.close()
 
+def disconnect():
+    print("Disconnecting...")
+
+    for i in connections:
+        connect_to_server(i)
+        client_socket.send("disconnect".encode())
+        client_socket.close()
 
 def main():
     Interface()

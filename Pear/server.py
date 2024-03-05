@@ -47,6 +47,13 @@ class Server:
 
             if data:
 
+                if data == b'disconected':
+                    print(f"Disconecting {address[0]}")
+                    if address[0] == client.connections[0]:
+                        print("Is my father")
+                    
+                    break
+
                 data = json.loads(data)
                 file_name = data['file_name']
                 last_peer = address[0]
