@@ -10,11 +10,11 @@ def Interface():
     global list_files
     print("\nSelect a number to navigate through the menu.")
     print("1. Search for a file")
-    print("2. List all connections")
+    print("2. List all connections\n")
     print("0. Exit")
     option = input()
 
-    if option == 1:
+    if int(option) == 1:
         print("\nEnter the name of the file you are looking for:")
         file = input()
 
@@ -36,14 +36,14 @@ def Interface():
             Interface()
 
 
-    elif option == 2:
+    elif int(option) == 2:
         print("Connections:")
         for i in connections:
             print(i)
 
         Interface()
 
-    elif option == 0:
+    elif int(option) == 0:
         disconnect()
         exit()
         
@@ -88,7 +88,7 @@ def send_request(data):
         client_socket.close()
 
 def disconnect():
-    print("Disconnecting...")
+    print("\nDisconnecting...")
 
     father = connections[0]
     random_peer = connections[random.randint(1, len(connections)-1)]
