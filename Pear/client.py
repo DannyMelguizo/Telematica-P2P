@@ -13,8 +13,12 @@ def Interface():
     print("2. List all connections\n")
     print("0. Exit\n")
     option = input()
+    
 
-    if int(option) == 1:
+    if int(option) == 0:
+        disconnect()
+
+    elif int(option) == 1:
         print("Enter the name of the file you are looking for:")
         file = input()
 
@@ -41,9 +45,6 @@ def Interface():
             print(i)
 
         Interface()
-
-    elif int(option) == 0:
-        disconnect()
 
     else:
         print("Invalid option\n")
@@ -101,7 +102,9 @@ def disconnect():
     
     log = f"Disconnecting"
     log_file.write_log_file(log, 1)
-    
+
+    exit()
+
 
 def main():
     Interface()

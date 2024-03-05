@@ -60,7 +60,7 @@ class Server:
                             client.connections[0] = father
                     else:
                         client.connections.remove(address[0])
-                        if random_peer != "None":
+                        if random_peer != "None" and random_peer not in client.connections and random_peer != self.my_ip:
                             client.connections.append(random_peer)
 
                     break
