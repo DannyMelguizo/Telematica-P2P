@@ -57,9 +57,9 @@ def try_connection(ip):
         pear_to_connect = connect_to_bootsp(ip)
 
     except Exception as e:
-        print("Error connecting to the server\nTry another IP:")
+        print("An error has ocurred connection to the server\nTry another IP:")
         
-        log = f"Error connecting to the server {ip}"
+        log = f"Error trying to connect to the server {ip}"
         log_file.write_log_file(log, 2)
 
         ip = input()

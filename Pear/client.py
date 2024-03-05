@@ -14,6 +14,11 @@ def Interface():
     print("0. Exit\n")
     option = input()
     
+    try:
+        int(option)
+    except:
+        print("Invalid option\n")
+        Interface()
 
     if int(option) == 0:
         disconnect()
