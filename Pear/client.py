@@ -38,6 +38,9 @@ def Interface():
 
     elif option == 0:
         pass
+    else:
+        print("Invalid option\n")
+        Interface()
 
 def show_files_found():
     print("\nFiles found:")
@@ -50,7 +53,6 @@ def show_files_found():
 
 def connect_to_peer(ip):
     #Create the socket
-    print(f"Connecting to {ip}")
     port = config_file.get_port_server()
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((ip, port))

@@ -86,8 +86,6 @@ class Server:
         data = {
             my_ip: file
         }
-        
-        print(f"Sending file {file} to {origin}")
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((origin, port_mom))

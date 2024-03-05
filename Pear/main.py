@@ -54,7 +54,10 @@ def try_connection(ip):
 
     except Exception as e:
         print("Error connecting to the server\nTry another IP:")
-        print(e)
+        
+        log = f"Error connecting to the server {ip}"
+        log_file.write_log_file(log, 2)
+
         ip = input()
         pear_to_connect = try_connection(ip)
     
