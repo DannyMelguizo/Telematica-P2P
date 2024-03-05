@@ -42,42 +42,36 @@ class Server:
         print("Connection from", address)
         if address[0] not in client.connections and len(client.connections) < 3:
             client.connections.append(address[0])
-        try:
-            while True:
-                data = client_socket.recv(self.buffer)
+        while True:
+            data = client_socket.recv(self.buffer)
 
-                if data:
+            if data:
 
-                    print(data)
+                data = json.loads(data)
+                file_name = data['file_name']
+                last_peer = address[0]
+                data['last_peer'] = last_peer
+                origin = data['origin']
 
-                    data = json.loads(data)
-                    file_name = data['file_name']
-                    last_peer = address[0]
-                    data['last_peer'] = last_peer
-                    origin = data['origin']
+                log = f"{origin} requested {file_name} from {last_peer}"
+                log_file.write_log_file(log)
 
-                    log = f"{origin} requested {file_name} from {last_peer}"
-                    log_file.write_log_file(log)
+                #Send the file
+                if self.search_file(file_name):
+                    print(f"File {file_name} found")
+                    self.send_file(file_name, origin)
+        
+                    client_socket.close()
+                    break
+                    
+                #Transfer the request to another peer
+                else:
+                    print(f"File {file_name} not found")
+                    print(f"Transfering request to another peer")
+                    client.send_request(data)
 
-                    #Send the file
-                    if self.search_file(file_name):
-                        print(f"File {file_name} found")
-                        self.send_file(file_name, origin)
-            
-                        client_socket.close()
-                        break
-                        
-                    #Transfer the request to another peer
-                    else:
-                        print(f"File {file_name} not found")
-                        print(f"Transfering request to another peer")
-                        client.send_request(data)
-
-                        client_socket.close()
-                        break
-
-        except ConnectionResetError:
-            print(f"Connection from {address} was closed")
+                    client_socket.close()
+                    break
 
     def search_file(self, file):
 
@@ -93,6 +87,8 @@ class Server:
             my_ip: file
         }
         
+        print(f"Sending file {file} to {origin}")
+
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((origin, port_mom))
         client_socket.send(json.dumps(data).encode())
