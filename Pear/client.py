@@ -12,7 +12,7 @@ def Interface():
     print("1. Search for a file")
     print("2. List all connections")
     print("0. Exit")
-    option = int(input())
+    option = input()
 
     if option == 1:
         print("\nEnter the name of the file you are looking for:")
@@ -24,10 +24,16 @@ def Interface():
             "last_peer": config_file.get_ip()
         }
 
+        list_files = []
+        print("Looking for the file...\n\nIf the file is found, we will show you a list below.\n\n")
+        print("Press any key to go back to the menu.")
+
         #Send the request to the known peers
         send_request(data)
-        list_files = []
-        print("waiting for response...")
+        
+        option = input()
+        if option:
+            Interface()
 
 
     elif option == 2:
@@ -39,6 +45,7 @@ def Interface():
 
     elif option == 0:
         disconnect()
+        exit()
         
     else:
         print("Invalid option\n")
@@ -50,8 +57,10 @@ def show_files_found():
         file = json.loads(file)
         print(f"{idx+1}. {list(file.keys())[0]} {list(file.values())[0]}")
     
-
-    Interface()
+    print("\nPress any key to go back to the menu.")
+    option = input()
+    if option:
+        Interface()
 
 def connect_to_peer(ip):
     #Create the socket
@@ -89,6 +98,9 @@ def disconnect():
         client_socket.connect((i, config_file.get_port_server()))
         client_socket.send(f"disconnect,{father},{random_peer}".encode())
         client_socket.close()
+    
+    log = f"Disconnecting"
+    log_file.write_log_file(log, 1)
 
 def main():
     Interface()
