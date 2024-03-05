@@ -107,9 +107,8 @@ def disconnect():
     
     log = f"Disconnecting"
     log_file.write_log_file(log, 1)
-
-    exit()
-
+    while True:
+        pass
 
 def main():
     Interface()
