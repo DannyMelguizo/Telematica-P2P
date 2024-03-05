@@ -10,6 +10,7 @@ from concurrent import futures
 
 class Server:
     def __init__(self, is_bootsp):
+        self.my_ip = config_file.get_ip()
         self.ip = '0.0.0.0'
         self.port = config_file.get_port_server()
         #Create the socket
@@ -47,11 +48,20 @@ class Server:
 
             if data:
 
-                if data == b'disconected':
-                    print(f"Disconecting {address[0]}")
+                if data.decode().startswith("disconnect"):
+                    data = data.decode().split(',')
+                    father = data[1]
+                    random_peer = data[2]
+
                     if address[0] == client.connections[0]:
-                        print("Is my father")
-                    
+                        if self.my_ip != random_peer:
+                            client.connections[0] = random_peer
+                        else:
+                            client.connections[0] = father
+                    else:
+                        client.connections.remove(address[0])
+                        client.connections.append(random_peer)
+
                     break
 
                 data = json.loads(data)
@@ -88,10 +98,9 @@ class Server:
         return False
     
     def send_file(self, file, origin):
-        my_ip = config_file.get_ip()
         port_mom = config_file.get_port_mom()
         data = {
-            my_ip: file
+            self.my_ip: file
         }
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

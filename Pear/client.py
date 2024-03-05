@@ -1,6 +1,7 @@
 import socket
 import config_file, log_file
 import json
+import random
 
 connections = []
 list_files = []
@@ -80,10 +81,13 @@ def send_request(data):
 def disconnect():
     print("Disconnecting...")
 
+    father = connections[0]
+    random_peer = connections[random.randint(1, len(connections)-1)]
+
     for i in connections:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((i, config_file.get_port_server()))
-        client_socket.send("disconnect".encode())
+        client_socket.send(f"disconnect,{father},{random_peer}".encode())
         client_socket.close()
 
 def main():
