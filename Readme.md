@@ -68,9 +68,24 @@ Para el desarrollo de este reto use las siguientes librerias, todas las que son 
 * **requests version >= 2.31.0**
 * **pika version >= 1.3.2**
 
-La red P2P fue pensada como un arbol binario, en la que cada nodo o peer puede tener maximo tres conexiones, un padre y dos hijos, en este caso, el nodo padre sera el peer al cual nos conectamos en primera instancia los nodos hijos seran peers que vayan llegando a la red. En primera instancia se puede llegar a pensar que si se cae el nodo raiz se cae toda la red, pero esto no es cierto, ya que el primer nodo, es decir el servidor de arranque no esta limitado a dos hijos, tambien tiene como limite tres conexiones las cuales se van agregando de manera aleatoria, se explica un poco mejor en la imagen.
+La red P2P fue pensada como un arbol binario, en la que cada nodo o peer puede tener inicialmente maximo tres conexiones, un padre y dos hijos, en este caso, el nodo padre sera el peer al cual nos conectamos en primera instancia los nodos hijos seran peers que vayan llegando a la red. En primera instancia se puede llegar a pensar que si se cae el nodo raiz se cae toda la red, pero esto no es cierto, ya que el primer nodo, es decir el servidor de arranque no esta limitado a dos hijos, tambien tiene como limite tres conexiones las cuales se van agregando de manera aleatoria, se explica un poco mejor en la imagen.
 
 ![red](./imgs/red.jpg)
+
+Esto es una representacion grafica de como se puede ir organizando la red, cada que un nodo llega, consulta el servidor de arranque por los nodos disponibles en la red y se conecta de manera aleatoria a uno de ellos, en este caso la red seria centralizada, ya que hay que preguntarle a un servidor antes de ingresar a la red, la solucion planteada a este problema es tener mas de un servidor de arranque en la que cada uno comparte el mismo archivo de peers disponibles, pero esto no se logro a implementar dentro del reto, por lo tanto, considero no se cumplio esa meta; aun asi, si desaparece el servidor de arranque, a pesar de que nadie puede ingresar en la red, los que forman parte de ella pueden operar sin problemas.
+
+Un problema planteado con esta solucion es el tema de que sucede cuando un nodo abandona la red, ¿los nodos hijos de ese peer que abandona la red se caen y ya no forman parte de la red? la respuesta es no, aunque en este caso el sistema no contempla que el nodo que abandona se caiga por algun factor externo, si el nodo que abandona la red, lo hace mediante la interfaz que es ofrecida por el sistema, reestructura la red para que uno de sus hijos tome su posicion y se conecte a los nodos que el estaba conectado a manera de puente.
+
+Esta estructura de arbol facilita la busqueda de archivos dentro de la red, podemos enviar una peticion a todos los nodos que un peer conozca y ademas, decir que esa solicitud no se la devuelva al peer que se la esta realizando, esto para evitar que hayan peticiones redundantes dentro de la red y haya mucho trafico, en cierto modo se realiza un flooding dentro de la red para buscar el archivo, no se establecio un TTL para las peticiones.
+
+Hablando un poco de la implementacion, como se mostro en la imagen correspondiente a la arquitectura, se usaron distintos middlewares para la transferencia de datos entre peers, por un lado tenemos gRPC que considero es una buena opcion para hacer llamados a funciones en un ordenador remoto. Como en un principio se tenia desarrollado el servidor de arranque en javascript fue una buena opcion para romper las limitaciones entre los lenguajes. Se utiliza sockets para la comunicacion entre el cliente/servidor y enviar mensajes como peticiones de archivo y por ultimo se tiene MOM pensado para la transferencia del archivo, aunque no se logro que enviara el archivo y se descargara en el peer origen, se tiene una simulacion que envia un mensaje del peer que posee el archivo al peer origen, en este caso considero que es buena opcion usar MOM, ya que el peer puede enviar el archivo totalmente, y si por algun casual el peer consumidor pierde conexion, reciba el archivo una vez vuelva a estar en linea.
+
+Defini los siguientes puertos para el uso de cada uno de los middlewares:
+* **8000** utilizado para la transferencia por sockets
+* **8001** utilizado para la transferencia por gRPC
+* **5672** utilizado para la transferencia por MOM
+
+
 
 * detalles del desarrollo.
 * detalles técnicos
