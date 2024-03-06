@@ -26,7 +26,7 @@ def get_random_ip():
     randomip = ips[random.randint(0, len(ips)-1)]
 
     #Verify if the random ip has less than 2 peers // The maximum number of peers is 3
-    while len(available_peers[randomip]) >= 2:
+    while len(available_peers[randomip]) > 2:
         randomip = ips[random.randint(0, len(ips)-1)]
 
     return randomip
