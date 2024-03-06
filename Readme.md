@@ -26,10 +26,21 @@ El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a 
 <div id="requisitos" />
 
 ### ***Requisitos completados***
-1.1. Que aspectos cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
+* La red debe permitir el ingreso de nuevos nodos a la red
+* El sistema debe poder encontrar cualquier archivo si lo posee un pear de la red
+* Cada pear se debe comportar tanto como servidor como cliente
+* El sistema debe ofrecer una interfaz al usuario
+* Cada pear debe tener un archivo config
+* El sistema debe implementar gRCP como middleware
+* El sistema debe implementar MOM como middleware
+* Cada pear debe generar un archivo log
+* El sistema debe ser capaz de reestructurarse si un nodo abandona la red
 
 ### ***Requisitos no completados***
-1.2. Que aspectos NO cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
+* El sistema debe poder descargar el archivo una vez localizado
+* El sistema debe implementar REST API como middleware
+* El sistema debe ser totalmente descentralizado
+* El sistema debe estar programado en dos lenguajes diferentes
 
 *******
 
