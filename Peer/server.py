@@ -41,7 +41,7 @@ class Server:
 
     def handle_client(self, client_socket, address):
         print("Connection from", address)
-        if address[0] not in client.connections and len(client.connections) < 3:
+        if address[0] not in client.connections:
             client.connections.append(address[0])
         while True:
             data = client_socket.recv(self.buffer)
