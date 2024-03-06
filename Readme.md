@@ -57,9 +57,19 @@ El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a 
 
 <div id="ambiente" />
   
-### ***3. Descripción del ambiente de desarrollo y técnico: lenguaje de programación, librerias, paquetes, etc, con sus numeros de versiones.***
+### ***3. Descripción del ambiente de desarrollo y técnico***
+Este reto fue desarrollado en python, la carpeta Bootsp inicialmente fue pensada para el desarrollo del servidor de arranque en javascript al final se presentaron algunos problemas en el manejo de sockets dentro del lenguaje, que por alguna razon bloqueaban el servidor asi que fue adaptado de igual manera a python para un correcto funcionamiento.
 
-* como se compila y ejecuta.
+Para el desarrollo de este reto use las siguientes librerias, todas las que son necesarias instalar vienen para ser instaladas dentro del archivo texto requirements.txt:
+
+* **threading , re , socket , random , json , configparser , os**
+* **grpc version >= 1.62.0**
+* **grpcio-tools version >= 1.62.0**
+* **requests version >= 2.31.0**
+* **pika version >= 1.3.2**
+
+La red P2P fue pensada como un arbol binario, en la que cada nodo o peer puede tener maximo tres conexiones, un padre y dos hijos, en este caso, el nodo padre sera el peer al cual nos conectamos en primera instancia los nodos hijos seran peers que vayan llegando a la red
+
 * detalles del desarrollo.
 * detalles técnicos
 * descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
@@ -70,19 +80,54 @@ El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a 
 
 <div id="ejecucion" />
   
-#### ***4. Descripción del ambiente de EJECUCIÓN (en producción) lenguaje de programación, librerias, paquetes, etc, con sus numeros de versiones.***
+#### ***4. Descripción de como configurar y como ejecutar el proyecto***
 
-IP o nombres de dominio en nube o en la máquina servidor.
+Para ejecutar el codigo es necesario crear minimo dos instancias en AWS, para un efecto practico y que se pueda ver digamos de manera entretenida el reto, es recomendable usar cuatro instancias en AWS. Para un buen funcionamiento seguir por favor las siguientes instrucciones:
 
-descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
+Crear dos (la cantidad deseada) instancias de EC2 con OS Ubuntu 20.04, recomendable usar el mismo grupo de seguridad para las instancias creadas para no configurar cada una manualmente. Una vez la instancia este creada, ir a los grupos de seguridad y editar las reglas de entrada, vamos a habilitar los siguientes puertos, cada uno de tipo TCP y permitiendo origen desde 0.0.0.0/0:
+  * 8000
+  * 8001
+  * 5672
 
-como se lanza el servidor.
+En mi caso, la conexion a las instancias lo hago con la aplicacion PuTTY, pueden usar cualquiera que deseen que les permita interactuar con la instancia. Vamos a ejecutar los siguientes comandos:
 
-una mini guia de como un usuario utilizaría el software o la aplicación
+```ssh
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install python3
+sudo apt-get install python3-pip
+sudo apt install docker.io
+sudo docker run -d --hostname my-rabbit -p 15672:15672 -p 5672:5672 --name rabbit-server rabbitmq:3-management
+sudo git clone https://github.com/DannyMelguizo/Telematica-P2P.git
+cd Telematica-P2P/Peer/
+sudo python3 -m grpc_tools.protoc -I protobufs --python_out=. --pyi_out=. --grpc_python_out=. protobufs/service.proto
+sudo python3 -m pip install -r requirements.txt
+```
 
-opcionalmente - si quiere mostrar resultados o pantallazos 
+Una vez llegados a este punto, ya es posible ejecutar el proyecto usando el comando:
 
-# 5. otra información que considere relevante para esta actividad.
+```ssh
+sudo python3 main.py
+```
+
+Pero no habria mucha interaccion entre los peers, ya que ninguno tiene archivos para compartir dentro de la red, vamos a hacer una simulacion, para ello, tomaremos una de las instancias de AWS como peer de arranque, las otras, seran peers que interactueen con el sistema, vamos a crear una carpeta llamada "shared_files" en la cual crearemos o almacenaremos los archivos que seran compartidos dentro de la red. Para efectos de la simulacion podemos crear el mismo archivo en varios peers o diferentes para buscar varios archivos, utilizando el siguiente comando en las instancias que definimos como peers (aclarar que el servidor de arranque tambien se comporta como peer, solo que por lo general este no deberia contener archivos).
+
+```ssh
+sudo mkdir shared_files
+sudo nano file.txt
+```
+
+Cabe mencionar que este directorio se generara por defecto una vez ejecutado el main.py, pero se generara vacio, podemos crear tantos archivos como queramos dentro de esta ruta y seran compartidos dentro de la red.
+
+Una vez hecho esto ahora si podemos ejecutar el archivo main.py con el comando especificado anteriormente, el primero que ejecutaremos sera la instancia que definimos como servidor de arranque, cuando el programa nos solicite la IP del servidor de arranque, colocaremos lo siguiente incluyendo la mayuscula.
+
+```ssh
+Enter the IP of the Bootstrap Server:
+Bootsp
+```
+
+Esto le especificara al sistema que somos un servidor de arranque y que atenderemos a los nuevos peers, una vez hecho esto, podemos ejecutar las demas instancias y esta vez, cuando solicite la IP colocaremos la IP del servidor de arranque proporcionada por AWS.
+
 
 *******
 
