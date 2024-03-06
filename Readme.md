@@ -168,7 +168,7 @@ Por último, si introducimos la opción 0 abandonaremos la red, pero antes de ab
 <div id="referencias"/>
   
 ### ***referencias:***
-https://www.rabbitmq.com/tutorials/tutorial-one-python
-https://grpc.io/docs/languages/python/basics/
-https://github.com/jcmtya/st0263-20241/tree/main/Laboratorio%20N1-RPC
-https://interactivavirtual.eafit.edu.co/d2l/le/content/153212/viewContent/807959/View
+* https://www.rabbitmq.com/tutorials/tutorial-one-python
+* https://grpc.io/docs/languages/python/basics/
+* https://github.com/jcmtya/st0263-20241/tree/main/Laboratorio%20N1-RPC
+* https://interactivavirtual.eafit.edu.co/d2l/le/content/153212/viewContent/807959/View
