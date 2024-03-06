@@ -19,7 +19,7 @@
 <div id="introduccion" />
   
 ### **Reto 1 y 2: Red P2P descentralizada**
-El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a traves de una interfaz (en este caso desarrollada por consola) los pears podran interactuar con la red, esta interracion sera principalmente para solicitar archivos, la solicitud debera llegar y recorrer los distintos pears conectados en la red en busca del archivo, una vez se encuentre el archivo, se le enviara una lista al pear solicitante de los distintos pears que tienen el archivo en la cual este podra decidir de cual de los pears en la lista descargar el archivo. Cada pear debe tener un archivo config en el cual se establezcan los diferentes datos que se consideren necesarios, minimamente tener, la ip del pear, puerto en el cual estara haciendo listening, directorio en el cual se buscaran los archivos y las ips conocidas por el pear.
+El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a traves de una interfaz (en este caso desarrollada por consola) los peers podran interactuar con la red, esta interracion sera principalmente para solicitar archivos, la solicitud debera llegar y recorrer los distintos peers conectados en la red en busca del archivo, una vez se encuentre el archivo, se le enviara una lista al peer solicitante de los distintos peers que tienen el archivo en la cual este podra decidir de cual de los peers en la lista descargar el archivo. Cada peer debe tener un archivo config en el cual se establezcan los diferentes datos que se consideren necesarios, minimamente tener, la ip del peer, puerto en el cual estara haciendo listening, directorio en el cual se buscaran los archivos y las ips conocidas por el peer.
 
 *******
 
@@ -27,13 +27,13 @@ El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a 
 
 ### ***Requisitos completados***
 * La red debe permitir el ingreso de nuevos nodos a la red
-* El sistema debe poder encontrar cualquier archivo si lo posee un pear de la red
-* Cada pear se debe comportar tanto como servidor como cliente
+* El sistema debe poder encontrar cualquier archivo si lo posee un peer de la red
+* Cada peer se debe comportar tanto como servidor como cliente
 * El sistema debe ofrecer una interfaz al usuario
-* Cada pear debe tener un archivo config
+* Cada peer debe tener un archivo config
 * El sistema debe implementar gRCP como middleware
 * El sistema debe implementar MOM como middleware
-* Cada pear debe generar un archivo log
+* Cada peer debe generar un archivo log
 * El sistema debe ser capaz de reestructurarse si un nodo abandona la red
 
 ### ***Requisitos no completados***
@@ -46,7 +46,12 @@ El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a 
 
 <div id="arquitectura" />
 
-### ***2. información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.***
+### ***Diseño de alto nivel***
+![Diseño de alto nivel](./imgs/DiseñoAltoNivel.png)
+
+### ***Arquitectura***
+
+![Arquitectura](./imgs/Arquitectura.png)
 
 *******
 
