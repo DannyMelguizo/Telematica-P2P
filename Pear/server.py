@@ -104,7 +104,10 @@ class Server:
             self.my_ip: file
         }
 
-        transfer_files.upload_file(origin, data)
+        json_data = json.dumps(data)
+        data_bytes = json_data.encode()
+
+        transfer_files.upload_file(origin, data_bytes)
 
         #Send the file to the origin
         # client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
