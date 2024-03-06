@@ -12,15 +12,19 @@ def main():
 
     if bootsp != "Bootsp":
         #Verify if the ip given is valid and try to connect to the server
-        pear_to_connect = try_connection(bootsp)
-        client.connect_to_peer(pear_to_connect.ip)
+        peer_to_connect = try_connection(bootsp)
+        client.connect_to_peer(peer_to_connect.ip)
         _server = threading.Thread(target=server.main)
 
     else:
         is_bootsp = True
         _server = threading.Thread(target=server.main, args=(is_bootsp,))
-        
-    _client = threading.Thread(target=client.main)
+
+    try:  
+        _client = threading.Thread(target=client.main)
+    except KeyboardInterrupt:
+        print("Exiting...")
+        exit()
     
     _client.start()
     _server.start()
@@ -39,7 +43,7 @@ def validate_ip(ip):
     
 def try_connection(ip):
 
-    pear_to_connect = None
+    peer_to_connect = None
 
     while validate_ip(ip) == False:
         print("Format IP invalid, try again:")
@@ -48,7 +52,7 @@ def try_connection(ip):
     try:
         print("Connecting to the server...")
         #Connect to the server bootsp
-        pear_to_connect = connect_to_bootsp(ip)
+        peer_to_connect = connect_to_bootsp(ip)
 
     except Exception as e:
         print("An error has ocurred connection to the server\nTry another IP:")
@@ -57,9 +61,9 @@ def try_connection(ip):
         log_file.write_log_file(log, 2)
 
         ip = input()
-        pear_to_connect = try_connection(ip)
+        peer_to_connect = try_connection(ip)
     
-    return pear_to_connect
+    return peer_to_connect
 
     
 def connect_to_bootsp(ip):
@@ -68,7 +72,7 @@ def connect_to_bootsp(ip):
 
     #Connection with gRPC to the server in gRPC port
     with grpc.insecure_channel(f'{ip}:{port}') as channel:
-        stub = service_pb2_grpc.GetAvailablePearsStub(channel)
+        stub = service_pb2_grpc.GetAvailablePeersStub(channel)
 
         #The IP answered by the server is added to the list of peers
         response = stub.AddIP(service_pb2.IPAddressClient(ip=my_ip))
@@ -77,7 +81,5 @@ def connect_to_bootsp(ip):
         
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("Exiting...")
+    main()
+    

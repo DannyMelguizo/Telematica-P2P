@@ -10,6 +10,6 @@ message IPResponse {
     string ip = 1;
 }
 
-service GetAvailablePears {
+service GetAvailablePeers {
     rpc AddIP(IPAddressClient) returns (IPResponse) {}
 }
