@@ -1,7 +1,8 @@
 import socket
-import config_file, log_file
+import config_file, log_file, transfer_files
 import json
 import random
+import threading
 
 connections = []
 list_files = []
@@ -37,6 +38,8 @@ def Interface():
         print("Looking for the file...\n\nIf the file is found, we will show you a list below.\n")
         print("Press any key to go back to the menu.")
 
+        threading.Thread(target=transfer_files.get_file).start()
+
         #Send the request to the known peers
         send_request(data)
         
@@ -57,7 +60,8 @@ def Interface():
 
 def show_files_found():
     print("\nFiles found:")
-    for idx, file in enumerate(list_files):
+    files = enumerate(list_files)
+    for idx, file in files:
         file = json.loads(file)
         print(f"{idx+1}. {list(file.keys())[0]} {list(file.values())[0]}")
     
@@ -107,8 +111,8 @@ def disconnect():
     
     log = f"Disconnecting"
     log_file.write_log_file(log, 1)
-    while True:
-        pass
+
+    print("To exit, press Ctrl+C\n")
 
 def main():
     Interface()

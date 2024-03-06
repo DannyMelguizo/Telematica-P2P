@@ -21,11 +21,11 @@ def main():
         _server = threading.Thread(target=server.main, args=(is_bootsp,))
         
     _client = threading.Thread(target=client.main)
-    _transfer_files = threading.Thread(target=transfer_files.main)
+    #_transfer_files = threading.Thread(target=transfer_files.main)
     
     _client.start()
     _server.start()
-    _transfer_files.start()
+    #_transfer_files.start()
 
 def validate_ip(ip):
     pattern = r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
@@ -79,4 +79,7 @@ def connect_to_bootsp(ip):
         
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting...")

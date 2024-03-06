@@ -2,7 +2,7 @@ import threading
 import socket
 import os
 import grpc
-import config_file, log_file, client, pears_file
+import config_file, log_file, client, pears_file, transfer_files
 import service_pb2, service_pb2_grpc
 import json
 
@@ -104,11 +104,14 @@ class Server:
             self.my_ip: file
         }
 
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((origin, port_mom))
-        client_socket.send(json.dumps(data).encode())
-        client_socket.shutdown(socket.SHUT_WR)
-        client_socket.close()
+        transfer_files.upload_file(origin, data)
+
+        #Send the file to the origin
+        # client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # client_socket.connect((origin, port_mom))
+        # client_socket.send(json.dumps(data).encode())
+        # client_socket.shutdown(socket.SHUT_WR)
+        # client_socket.close()
 
 class GetAvailablePears(service_pb2_grpc.GetAvailablePearsServicer):
 
