@@ -78,20 +78,12 @@ Un problema planteado con esta solucion es el tema de que sucede cuando un nodo 
 
 Esta estructura de arbol facilita la busqueda de archivos dentro de la red, podemos enviar una peticion a todos los nodos que un peer conozca y ademas, decir que esa solicitud no se la devuelva al peer que se la esta realizando, esto para evitar que hayan peticiones redundantes dentro de la red y haya mucho trafico, en cierto modo se realiza un flooding dentro de la red para buscar el archivo, no se establecio un TTL para las peticiones.
 
-Hablando un poco de la implementacion, como se mostro en la imagen correspondiente a la arquitectura, se usaron distintos middlewares para la transferencia de datos entre peers, por un lado tenemos gRPC que considero es una buena opcion para hacer llamados a funciones en un ordenador remoto. Como en un principio se tenia desarrollado el servidor de arranque en javascript fue una buena opcion para romper las limitaciones entre los lenguajes. Se utiliza sockets para la comunicacion entre el cliente/servidor y enviar mensajes como peticiones de archivo y por ultimo se tiene MOM pensado para la transferencia del archivo, aunque no se logro que enviara el archivo y se descargara en el peer origen, se tiene una simulacion que envia un mensaje del peer que posee el archivo al peer origen, en este caso considero que es buena opcion usar MOM, ya que el peer puede enviar el archivo totalmente, y si por algun casual el peer consumidor pierde conexion, reciba el archivo una vez vuelva a estar en linea.
+Hablando un poco de la implementacion, como se mostro en la imagen correspondiente a la arquitectura, se usaron distintos middlewares para la transferencia de datos entre peers, por un lado tenemos gRPC que considero es una buena opcion para hacer llamados a funciones en un ordenador remoto. Como en un principio se tenia desarrollado el servidor de arranque en javascript fue una buena opcion para romper las limitaciones entre los lenguajes. Se utiliza sockets para la comunicacion entre el cliente/servidor y enviar mensajes como peticiones de archivo y por ultimo se tiene MOM pensado para la transferencia del archivo, aunque no se logro que enviara el archivo y se descargara en el peer origen, se tiene una simulacion que envia un mensaje del peer que posee el archivo al peer origen, en este caso considero que es buena opcion usar MOM, ya que el peer puede enviar el archivo totalmente, y si por algun casual el peer consumidor pierde conexion, pueda recibir el archivo una vez vuelva a estar en linea.
 
 Defini los siguientes puertos para el uso de cada uno de los middlewares:
 * **8000** utilizado para la transferencia por sockets
 * **8001** utilizado para la transferencia por gRPC
 * **5672** utilizado para la transferencia por MOM
-
-
-
-* detalles del desarrollo.
-* detalles técnicos
-* descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
-* opcional - detalles de la organización del código por carpetas o descripción de algún archivo. (ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS IMPORTANTE DEL PROYECTO, comando 'tree' de linux)
-* opcionalmente - si quiere mostrar resultados o pantallazos 
 
 *******
 
@@ -145,12 +137,38 @@ Bootsp
 
 Esto le especificara al sistema que somos un servidor de arranque y que atenderemos a los nuevos peers, una vez hecho esto, podemos ejecutar las demas instancias y esta vez, cuando solicite la IP colocaremos la IP del servidor de arranque proporcionada por AWS.
 
+Se nos mostrara una interfaz como la siguiente.
+
+```ssh
+Select a number to navigate through the menu.
+1. Search for a file
+2. List all connections
+
+0. Exit
+```
+
+Si introducimos el numero 1, nos permitira realizar una peticion por un archivo, en la cual deberemos especificar el nombre del archivo, teniendo en cuenta que el sistema es case sensitive. Si el sistema no ha encontrado o no encuentra el archivo se nos mostrara un mensaje como el siguiente:
+
+```ssh
+Looking for the file...
+
+If the file is found, we will show you a list below.
+
+Press any key to go back to the menu.
+```
+En el cual podemos apretar cualquier tecla para realizar otra busqueda, teniendo en cuenta que una vez se encuentre, nos llega una lista con los peers que tienen el archivo y el nombre del archivo para reconocer que busqueda se realizo.
+
+La otra opcion que tiene la interfaz, en este caso el numero 2, es para listar las conexiones que ese peer tiene, estas conexiones son a las que el le preguntara por el archivo, y confia en que cada conexion le preguntara a su vez a las conexiones que ellos tengan.
+
+Por ultimo, si introducimos la opcion 0 abandonaremos la red, pero antes de abandonarla el peer notifica a sus conexiones que saldra de la red, por lo tanto se tienen que reestructurar.
+
 
 *******
 
 <div id="referencias"/>
   
 ### ***referencias:***
-  sitio1-url 
-  sitio2-url
-  url de donde tomo info para desarrollar este proyecto
+https://www.rabbitmq.com/tutorials/tutorial-one-python
+https://grpc.io/docs/languages/python/basics/
+https://github.com/jcmtya/st0263-20241/tree/main/Laboratorio%20N1-RPC
+https://interactivavirtual.eafit.edu.co/d2l/le/content/153212/viewContent/807959/View
