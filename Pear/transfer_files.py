@@ -2,7 +2,7 @@ import config_file, client
 import pika
 
 def get_file():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(config_file.get_ip(), 5672))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(config_file.get_ip(), config_file.get_port_mom()))
     channel = connection.channel()
 
     channel.queue_declare(queue=config_file.get_ip())
@@ -15,7 +15,7 @@ def get_file():
     channel.start_consuming()
 
 def upload_file(ip, file):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(ip, 5672))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(ip, config_file.get_port_mom()))
     channel = connection.channel()
 
     channel.queue_declare(queue=ip)
