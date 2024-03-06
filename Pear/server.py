@@ -99,7 +99,6 @@ class Server:
         return False
     
     def send_file(self, file, origin):
-        port_mom = config_file.get_port_mom()
         data = {
             self.my_ip: file
         }
@@ -107,14 +106,8 @@ class Server:
         json_data = json.dumps(data)
         data_bytes = json_data.encode()
 
-        transfer_files.upload_file(origin, data_bytes)
-
         #Send the file to the origin
-        # client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # client_socket.connect((origin, port_mom))
-        # client_socket.send(json.dumps(data).encode())
-        # client_socket.shutdown(socket.SHUT_WR)
-        # client_socket.close()
+        transfer_files.upload_file(origin, data_bytes)
 
 class GetAvailablePears(service_pb2_grpc.GetAvailablePearsServicer):
 

@@ -1,7 +1,7 @@
 import threading
 import re
 import grpc
-import server, client, transfer_files,config_file, log_file, service_pb2, service_pb2_grpc
+import server, client, config_file, log_file, service_pb2, service_pb2_grpc
 
 def main():
     config_file.create_config_file()
@@ -21,11 +21,9 @@ def main():
         _server = threading.Thread(target=server.main, args=(is_bootsp,))
         
     _client = threading.Thread(target=client.main)
-    #_transfer_files = threading.Thread(target=transfer_files.main)
     
     _client.start()
     _server.start()
-    #_transfer_files.start()
 
 def validate_ip(ip):
     pattern = r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
