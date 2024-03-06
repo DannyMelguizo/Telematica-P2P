@@ -1,4 +1,4 @@
-# **ST0263 Topicos Especiales en Telematica**
+# **ST0263 Tópicos Especiales en Telemática**
 
 # **Estudiante**: Daniel Melguizo Roldan, dmelguizor@eafit.edu.co
 
@@ -7,11 +7,11 @@
 *******
 
 **Tabla de Contenido**
-1. [Introduccion](#introduccion)
+1. [Introducción](#introduccion)
 2. [Requisitos completados y no completados](#requisitos)
 3. [Diseño y arquitectura](#arquitectura)
 4. [Ambiente de desarrollo](#ambiente)
-5. [Ejecucion](#ejecucion)
+5. [Ejecución](#ejecucion)
 6. [Referencias](#referencias)
 
 *******
@@ -19,28 +19,28 @@
 <div id="introduccion" />
   
 ### **Reto 1 y 2: Red P2P descentralizada**
-El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a traves de una interfaz (en este caso desarrollada por consola) los peers podran interactuar con la red, esta interracion sera principalmente para solicitar archivos, la solicitud debera llegar y recorrer los distintos peers conectados en la red en busca del archivo, una vez se encuentre el archivo, se le enviara una lista al peer solicitante de los distintos peers que tienen el archivo en la cual este podra decidir de cual de los peers en la lista descargar el archivo. Cada peer debe tener un archivo config en el cual se establezcan los diferentes datos que se consideren necesarios, minimamente tener, la ip del peer, puerto en el cual estara haciendo listening, directorio en el cual se buscaran los archivos y las ips conocidas por el peer.
+El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a través de una interfaz (en este caso desarrollada por consola) los peers podrán interactuar con la red, esta interacción será principalmente para solicitar archivos, la solicitud deberá llegar y recorrer los distintos peers conectados en la red en busca del archivo, una vez se encuentre el archivo, se le enviara una lista al peer solicitante de los distintos peers que tienen el archivo en la cual este podrá decidir de cuál de los peers en la lista descargar el archivo. Cada peer debe tener un archivo config en el cual se establezcan los diferentes datos que se consideren necesarios, mínimamente tener, la IP del peer, puerto en el cual estará haciendo listening, directorio en el cual se buscaran los archivos y las IPs conocidas por el peer.
 
 *******
 
 <div id="requisitos" />
 
 ### ***Requisitos completados***
-* La red debe permitir el ingreso de nuevos nodos a la red
-* El sistema debe poder encontrar cualquier archivo si lo posee un peer de la red
-* Cada peer se debe comportar tanto como servidor como cliente
-* El sistema debe ofrecer una interfaz al usuario
-* Cada peer debe tener un archivo config
-* El sistema debe implementar gRCP como middleware
-* El sistema debe implementar MOM como middleware
-* Cada peer debe generar un archivo log
-* El sistema debe ser capaz de reestructurarse si un nodo abandona la red
+* La red debe permitir el ingreso de nuevos nodos a la red.
+* El sistema debe poder encontrar cualquier archivo si lo posee un peer de la red.
+* Cada peer se debe comportar tanto como servidor como cliente.
+* El sistema debe ofrecer una interfaz al usuario.
+* Cada peer debe tener un archivo config.
+* El sistema debe implementar gRCP como middleware.
+* El sistema debe implementar MOM como middleware.
+* Cada peer debe generar un archivo log.
+* El sistema debe ser capaz de reestructurarse si un nodo abandona la red.
 
 ### ***Requisitos no completados***
-* El sistema debe poder descargar el archivo una vez localizado
-* El sistema debe implementar REST API como middleware
-* El sistema debe ser totalmente descentralizado
-* El sistema debe estar programado en dos lenguajes diferentes
+* El sistema debe poder descargar el archivo una vez localizado.
+* El sistema debe implementar REST API como middleware.
+* El sistema debe ser totalmente descentralizado.
+* El sistema debe estar programado en dos lenguajes diferentes.
 
 *******
 
@@ -58,9 +58,9 @@ El reto consiste en crear una red P2P totalmente descentralizada, en la cual, a 
 <div id="ambiente" />
   
 ### ***3. Descripción del ambiente de desarrollo y técnico***
-Este reto fue desarrollado en python, la carpeta Bootsp inicialmente fue pensada para el desarrollo del servidor de arranque en javascript al final se presentaron algunos problemas en el manejo de sockets dentro del lenguaje, que por alguna razon bloqueaban el servidor asi que fue adaptado de igual manera a python para un correcto funcionamiento.
+Este reto fue desarrollado en Python, la carpeta Bootsp inicialmente fue pensada para el desarrollo del servidor de arranque en JavaScript al final se presentaron algunos problemas en el manejo de sockets dentro del lenguaje, que por alguna razón bloqueaban el servidor así que fue adaptado de igual manera a Python para un correcto funcionamiento.
 
-Para el desarrollo de este reto use las siguientes librerias, todas las que son necesarias instalar vienen para ser instaladas dentro del archivo texto requirements.txt:
+Para el desarrollo de este reto use las siguientes librerías, todas las que son necesarias instalar vienen para ser instaladas dentro del archivo texto requirements.txt:
 
 * **threading , re , socket , random , json , configparser , os**
 * **grpc version >= 1.62.0**
@@ -68,15 +68,22 @@ Para el desarrollo de este reto use las siguientes librerias, todas las que son 
 * **requests version >= 2.31.0**
 * **pika version >= 1.3.2**
 
-La red P2P fue pensada como un arbol binario, en la que cada nodo o peer puede tener maximo tres conexiones, un padre y dos hijos, en este caso, el nodo padre sera el peer al cual nos conectamos en primera instancia los nodos hijos seran peers que vayan llegando a la red. En primera instancia se puede llegar a pensar que si se cae el nodo raiz se cae toda la red, pero esto no es cierto, ya que el primer nodo, es decir el servidor de arranque no esta limitado a dos hijos, tambien tiene como limite tres conexiones las cuales se van agregando de manera aleatoria, se explica un poco mejor en la imagen.
+La red P2P fue pensada como un árbol binario, en la que cada nodo o peer puede tener inicialmente máximo tres conexiones, un padre y dos hijos, en este caso, el nodo padre será el peer al cual nos conectamos en primera instancia los nodos hijos serán peers que vayan llegando a la red. En primera instancia se puede llegar a pensar que si se cae el nodo raíz se cae toda la red, pero esto no es cierto, ya que el primer nodo, es decir el servidor de arranque no está limitado a dos hijos, también tiene como límite tres conexiones las cuales se van agregando de manera aleatoria, se explica un poco mejor en la imagen.
 
 ![red](./imgs/red.jpg)
 
-* detalles del desarrollo.
-* detalles técnicos
-* descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
-* opcional - detalles de la organización del código por carpetas o descripción de algún archivo. (ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS IMPORTANTE DEL PROYECTO, comando 'tree' de linux)
-* opcionalmente - si quiere mostrar resultados o pantallazos 
+Esto es una representación gráfica de cómo se puede ir organizando la red, cada que un nodo llega, consulta el servidor de arranque por los nodos disponibles en la red y se conecta de manera aleatoria a uno de ellos, en este caso la red seria centralizada, ya que hay que preguntarle a un servidor antes de ingresar a la red, la solución planteada a este problema es tener más de un servidor de arranque en la que cada uno comparte el mismo archivo de peers disponibles, pero esto no se logró a implementar dentro del reto, por lo tanto, considero no se cumplió esa meta; aun así, si desaparece el servidor de arranque, a pesar de que nadie puede ingresar en la red, los que forman parte de ella pueden operar sin problemas.
+
+Un problema planteado con esta solución es el tema de que sucede cuando un nodo abandona la red, ¿los nodos hijos de ese peer que abandona la red se caen y ya no forman parte de la red? la respuesta es no, aunque en este caso el sistema no contempla que el nodo que abandona se caiga por algún factor externo, si el nodo que abandona la red, lo hace mediante la interfaz que es ofrecida por el sistema, reestructura la red para que uno de sus hijos tome su posición y se conecte a los nodos que él estaba conectado a manera de puente.
+
+Esta estructura de árbol facilita la búsqueda de archivos dentro de la red, podemos enviar una petición a todos los nodos que un peer conozca y además, decir que esa solicitud no se la devuelva al peer que se la está realizando, esto para evitar que hayan peticiones redundantes dentro de la red y haya mucho tráfico, en cierto modo se realiza un flooding dentro de la red para buscar el archivo, no se estableció un TTL para las peticiones.
+
+Hablando un poco de la implementación, como se mostró en la imagen correspondiente a la arquitectura, se usaron distintos middlewares para la transferencia de datos entre peers, por un lado, tenemos gRPC que considero es una buena opción para hacer llamados a funciones en un ordenador remoto. Como en un principio se tenía desarrollado el servidor de arranque en JavaScript fue una buena opción para romper las limitaciones entre los lenguajes. Se utiliza sockets para la comunicación entre el cliente/servidor y enviar mensajes como peticiones de archivo y por último se tiene MOM pensado para la transferencia del archivo, aunque no se logró que enviara el archivo y se descargara en el peer origen, se tiene una simulación que envía un mensaje del peer que posee el archivo al peer origen, en este caso considero que es buena opción usar MOM, ya que el peer puede enviar el archivo totalmente, y si por algún casual el peer consumidor pierde conexión, pueda recibir el archivo una vez vuelva a estar en línea.
+
+Se definieron los siguientes puertos para el uso de cada uno de los middlewares:
+* **8000** utilizado para la transferencia por sockets.
+* **8001** utilizado para la transferencia por gRPC.
+* **5672** utilizado para la transferencia por MOM.
 
 *******
 
@@ -84,14 +91,14 @@ La red P2P fue pensada como un arbol binario, en la que cada nodo o peer puede t
   
 #### ***4. Descripción de como configurar y como ejecutar el proyecto***
 
-Para ejecutar el codigo es necesario crear minimo dos instancias en AWS, para un efecto practico y que se pueda ver digamos de manera entretenida el reto, es recomendable usar cuatro instancias en AWS. Para un buen funcionamiento seguir por favor las siguientes instrucciones:
+Para ejecutar el código es necesario crear mínimo dos instancias en AWS, para un efecto práctico y que se pueda ver digamos de manera entretenida el reto, es recomendable usar cuatro instancias en AWS. Para un buen funcionamiento seguir por favor las siguientes instrucciones:
 
 Crear dos (la cantidad deseada) instancias de EC2 con OS Ubuntu 20.04, recomendable usar el mismo grupo de seguridad para las instancias creadas para no configurar cada una manualmente. Una vez la instancia este creada, ir a los grupos de seguridad y editar las reglas de entrada, vamos a habilitar los siguientes puertos, cada uno de tipo TCP y permitiendo origen desde 0.0.0.0/0:
   * 8000
   * 8001
   * 5672
 
-En mi caso, la conexion a las instancias lo hago con la aplicacion PuTTY, pueden usar cualquiera que deseen que les permita interactuar con la instancia. Vamos a ejecutar los siguientes comandos:
+En mi caso, la conexión a las instancias lo hago con la aplicación PuTTY, pueden usar cualquiera que deseen que les permita interactuar con la instancia. Vamos a ejecutar los siguientes comandos:
 
 ```ssh
 sudo apt-get update
@@ -112,23 +119,48 @@ Una vez llegados a este punto, ya es posible ejecutar el proyecto usando el coma
 sudo python3 main.py
 ```
 
-Pero no habria mucha interaccion entre los peers, ya que ninguno tiene archivos para compartir dentro de la red, vamos a hacer una simulacion, para ello, tomaremos una de las instancias de AWS como peer de arranque, las otras, seran peers que interactueen con el sistema, vamos a crear una carpeta llamada "shared_files" en la cual crearemos o almacenaremos los archivos que seran compartidos dentro de la red. Para efectos de la simulacion podemos crear el mismo archivo en varios peers o diferentes para buscar varios archivos, utilizando el siguiente comando en las instancias que definimos como peers (aclarar que el servidor de arranque tambien se comporta como peer, solo que por lo general este no deberia contener archivos).
+Pero no existiría mucha interacción entre los peers, ya que ninguno tiene archivos para compartir dentro de la red, vamos a hacer una simulación, para ello, tomaremos una de las instancias de AWS como peer de arranque, las otras, serán peers que interactúen con el sistema, vamos a crear una carpeta llamada "shared_files" en la cual crearemos o almacenaremos los archivos que serán compartidos dentro de la red. Para efectos de la simulación podemos crear el mismo archivo en varios peers o diferentes para buscar varios archivos, utilizando el siguiente comando en las instancias que definimos como peers (aclarar que el servidor de arranque también se comporta como peer, solo que por lo general este no debería contener archivos).
 
 ```ssh
 sudo mkdir shared_files
 sudo nano file.txt
 ```
 
-Cabe mencionar que este directorio se generara por defecto una vez ejecutado el main.py, pero se generara vacio, podemos crear tantos archivos como queramos dentro de esta ruta y seran compartidos dentro de la red.
+Cabe mencionar que este directorio se generara por defecto una vez ejecutado el main.py, pero se generara vacío, podemos crear tantos archivos como queramos dentro de esta ruta y serán compartidos dentro de la red.
 
-Una vez hecho esto ahora si podemos ejecutar el archivo main.py con el comando especificado anteriormente, el primero que ejecutaremos sera la instancia que definimos como servidor de arranque, cuando el programa nos solicite la IP del servidor de arranque, colocaremos lo siguiente incluyendo la mayuscula.
+Una vez hecho esto ahora si podemos ejecutar el archivo main.py con el comando especificado anteriormente, el primero que ejecutaremos será la instancia que definimos como servidor de arranque, cuando el programa nos solicite la IP del servidor de arranque, colocaremos lo siguiente incluyendo la mayúscula.
 
 ```ssh
 Enter the IP of the Bootstrap Server:
 Bootsp
 ```
 
-Esto le especificara al sistema que somos un servidor de arranque y que atenderemos a los nuevos peers, una vez hecho esto, podemos ejecutar las demas instancias y esta vez, cuando solicite la IP colocaremos la IP del servidor de arranque proporcionada por AWS.
+Esto le especificara al sistema que somos un servidor de arranque y que atenderemos a los nuevos peers, una vez hecho esto, podemos ejecutar las demás instancias y esta vez, cuando solicite la IP colocaremos la IP del servidor de arranque proporcionada por AWS.
+
+Se nos mostrara una interfaz como la siguiente.
+
+```ssh
+Select a number to navigate through the menu.
+1. Search for a file
+2. List all connections
+
+0. Exit
+```
+
+Si introducimos el número 1, nos permite realizar una petición por un archivo, en la cual deberemos especificar el nombre del archivo, teniendo en cuenta que el sistema es case sensitive. Si el sistema no ha encontrado o no encuentra el archivo se nos mostrara un mensaje como el siguiente:
+
+```ssh
+Looking for the file...
+
+If the file is found, we will show you a list below.
+
+Press any key to go back to the menu.
+```
+En el cual podemos apretar cualquier tecla para realizar otra búsqueda, teniendo en cuenta que una vez se encuentre, nos llega una lista con los peers que tienen el archivo y el nombre del archivo para reconocer que búsqueda se realizó.
+
+La otra opción que tiene la interfaz, en este caso el número 2, es para listar las conexiones que ese peer tiene, estas conexiones son a las que él le preguntara por el archivo y confía en que cada conexión le preguntara a su vez a las conexiones que ellos tengan.
+
+Por último, si introducimos la opción 0 abandonaremos la red, pero antes de abandonarla el peer notifica a sus conexiones que saldrá de la red, por lo tanto, se tienen que reestructurar.
 
 
 *******
@@ -136,6 +168,7 @@ Esto le especificara al sistema que somos un servidor de arranque y que atendere
 <div id="referencias"/>
   
 ### ***referencias:***
-  sitio1-url 
-  sitio2-url
-  url de donde tomo info para desarrollar este proyecto
+* https://www.rabbitmq.com/tutorials/tutorial-one-python
+* https://grpc.io/docs/languages/python/basics/
+* https://github.com/jcmtya/st0263-20241/tree/main/Laboratorio%20N1-RPC
+* https://interactivavirtual.eafit.edu.co/d2l/le/content/153212/viewContent/807959/View
