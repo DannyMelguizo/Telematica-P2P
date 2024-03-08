@@ -38,8 +38,7 @@ def Interface():
         print("Looking for the file...\n\nIf the file is found, we will show you a list below.\n")
         print("Press any key to go back to the menu.")
 
-        #threading.Thread(target=transfer_files.get_file).start()
-        transfer_files.get_file()
+        threading.Thread(target=transfer_files.get_file).start()
 
         #Send the request to the known peers
         send_request(data)
