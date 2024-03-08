@@ -17,8 +17,7 @@ def get_file():
 def upload_file(ip, file):
     connection = pika.BlockingConnection(pika.ConnectionParameters(ip, config_file.get_port_mom()))
     channel = connection.channel()
-
-    print(f"Uploading file {file} to {ip}")
+    
     channel.queue_declare(queue=ip)
     channel.basic_publish(exchange='', routing_key=ip, body=file)
     print(f" [x] Sent file {file}")
