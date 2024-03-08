@@ -11,7 +11,8 @@ def Interface():
     global list_files
     print("\nSelect a number to navigate through the menu.")
     print("1. Search for a file")
-    print("2. List all connections\n")
+    print("2. List all connections")
+    print("3. Show files found\n")
     print("0. Exit\n")
     option = input()
     
@@ -54,6 +55,9 @@ def Interface():
 
         Interface()
 
+    elif int(option) == 3:
+        show_files_found()
+
     else:
         print("Invalid option\n")
         Interface()
@@ -81,7 +85,6 @@ def connect_to_peer(ip):
 
 def files_founds(data):
     list_files.append(data)
-    show_files_found()
 
 def send_request(data):
     #Send the request to the known peers
